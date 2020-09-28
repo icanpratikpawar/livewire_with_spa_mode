@@ -23,10 +23,40 @@
     </head>
     <body>
         @livewire('navigation')
-        <div class="container">
-            @yield('content')
+        <div id="content">
         </div>
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
+    <script>
+        // Custom Navigation without page reload.....Using history push state!!
+        buttons = document.querySelectorAll('.btn');
+        document.addEventListener('click', function(e) {
+            if (e.target.className == "btn") {
+                e.preventDefault();
+                let request = e.target.href;
+                fetch(request, {
+                    method: "GET"
+                }).then((res) => {
+                    return res.text();
+                }).then((text) => {
+                    console.log(text);
+                    // document.getElementsByTagName('html')[0].innerHTML = text;
+                    document.getElementById('content').innerHTML=text;
+                    window.history.pushState(request, '', '');
+                });
+            }
+        });
+        window.addEventListener("popstate", function(e) {
+            e.preventDefault();
+            let request = location.href;
+            fetch(request, {
+                    method: "GET"
+                }).then((res) => {
+                    return res.text();
+                }).then((text) => {
+                    document.getElementsByTagName('html')[0].innerHTML = text;
+                });
+        });
+    </script>
     </body>
 </html>

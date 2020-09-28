@@ -9,7 +9,7 @@ class About extends Component
     public function render()
     {
         return view('livewire.about')
-        ->extends('layouts.app')
+        ->extends('layouts.base')
         ->section('content');
     }
 }
